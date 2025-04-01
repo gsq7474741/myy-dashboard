@@ -132,14 +132,15 @@ const priorityMap: Record<string, { label: string; className: string }> = {
   high: { label: "高", className: "text-red-600" },
 };
 
-export default async function MaintenanceTaskDetailPage({ 
-  params 
-}: { 
-  params: { id: string; taskId: string } 
-}) {
+export default async function MaintenanceTaskDetailPage(
+  props: { 
+    params: Promise<{ id: string; taskId: string }> 
+  }
+) {
+  const params = await props.params;
   const task = await getMaintenanceTask(params.id, params.taskId);
   const plan = await getMaintenancePlan(params.id);
-  
+
   if (!task || !plan) {
     return (
       <div className="p-8 text-center">
@@ -151,7 +152,7 @@ export default async function MaintenanceTaskDetailPage({
       </div>
     );
   }
-  
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">

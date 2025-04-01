@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -41,7 +41,8 @@ async function createOutboundRecord(data: any) {
   return { success: true };
 }
 
-export default function NewOutboundPage() {
+// 使用 SearchParams 的组件需要被 Suspense 包裹
+function OutboundPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialPlantId = searchParams.get("plantId");
@@ -499,5 +500,14 @@ export default function NewOutboundPage() {
         </div>
       </form>
     </div>
+  );
+}
+
+// 导出主页面组件，使用Suspense包裹使用useSearchParams的组件
+export default function NewOutboundPage() {
+  return (
+    <Suspense fallback={<div className="container mx-auto py-6">加载中...</div>}>
+      <OutboundPageContent />
+    </Suspense>
   );
 }
