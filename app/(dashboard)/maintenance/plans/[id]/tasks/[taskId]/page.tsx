@@ -135,11 +135,10 @@ const priorityMap: Record<string, { label: string; className: string }> = {
 export default async function MaintenanceTaskDetailPage({ 
   params 
 }: { 
-  params: Promise<{ id: string; taskId: string }> 
+  params: { id: string; taskId: string } 
 }) {
-  const { id, taskId } = React.use(params);
-  const task = await getMaintenanceTask(id, taskId);
-  const plan = await getMaintenancePlan(id);
+  const task = await getMaintenanceTask(params.id, params.taskId);
+  const plan = await getMaintenancePlan(params.id);
   
   if (!task || !plan) {
     return (
@@ -147,7 +146,7 @@ export default async function MaintenanceTaskDetailPage({
         <h2 className="text-2xl font-bold">养护任务不存在</h2>
         <p className="mt-2 text-muted-foreground">找不到指定的养护任务</p>
         <Button asChild className="mt-4">
-          <Link href={`/maintenance/plans/${id}/tasks`}>返回任务列表</Link>
+          <Link href={`/maintenance/plans/${params.id}/tasks`}>返回任务列表</Link>
         </Button>
       </div>
     );
@@ -157,7 +156,7 @@ export default async function MaintenanceTaskDetailPage({
     <div className="space-y-6">
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="sm" asChild>
-          <Link href={`/maintenance/plans/${id}/tasks`}>
+          <Link href={`/maintenance/plans/${params.id}/tasks`}>
             <IconArrowLeft className="h-4 w-4 mr-1" />
             返回任务列表
           </Link>
@@ -173,7 +172,7 @@ export default async function MaintenanceTaskDetailPage({
           <p className="text-muted-foreground">{task.description}</p>
           <p className="mt-1">
             <span className="font-medium">所属计划:</span>{" "}
-            <Link href={`/maintenance/plans/${id}`} className="hover:underline text-primary">
+            <Link href={`/maintenance/plans/${params.id}`} className="hover:underline text-primary">
               {plan.name}
             </Link>
           </p>
@@ -182,13 +181,13 @@ export default async function MaintenanceTaskDetailPage({
           {task.status === "pending" && (
             <>
               <Button asChild>
-                <Link href={`/maintenance/plans/${id}/tasks/${taskId}/start`}>
+                <Link href={`/maintenance/plans/${params.id}/tasks/${params.taskId}/start`}>
                   <IconCheck className="h-4 w-4 mr-1" />
                   开始任务
                 </Link>
               </Button>
               <Button variant="outline" asChild>
-                <Link href={`/maintenance/plans/${id}/tasks/${taskId}/edit`}>
+                <Link href={`/maintenance/plans/${params.id}/tasks/${params.taskId}/edit`}>
                   <IconEdit className="h-4 w-4 mr-1" />
                   编辑任务
                 </Link>
@@ -198,13 +197,13 @@ export default async function MaintenanceTaskDetailPage({
           {task.status === "in_progress" && (
             <>
               <Button asChild>
-                <Link href={`/maintenance/plans/${id}/tasks/${taskId}/complete`}>
+                <Link href={`/maintenance/plans/${params.id}/tasks/${params.taskId}/complete`}>
                   <IconCheck className="h-4 w-4 mr-1" />
                   完成任务
                 </Link>
               </Button>
               <Button variant="outline" asChild>
-                <Link href={`/maintenance/plans/${id}/tasks/${taskId}/edit`}>
+                <Link href={`/maintenance/plans/${params.id}/tasks/${params.taskId}/edit`}>
                   <IconEdit className="h-4 w-4 mr-1" />
                   编辑任务
                 </Link>
@@ -213,7 +212,7 @@ export default async function MaintenanceTaskDetailPage({
           )}
           {task.status === "completed" && (
             <Button variant="outline" asChild>
-              <Link href={`/maintenance/plans/${id}/tasks/${taskId}/report`}>
+              <Link href={`/maintenance/plans/${params.id}/tasks/${params.taskId}/report`}>
                 查看报告
               </Link>
             </Button>

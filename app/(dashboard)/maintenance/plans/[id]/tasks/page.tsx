@@ -157,10 +157,11 @@ const priorityMap: Record<string, { label: string; className: string }> = {
   high: { label: "高", className: "text-red-600" },
 };
 
-export default async function MaintenancePlanTasksPage({ params }: { params: { id: string } }) {
+export default async function MaintenancePlanTasksPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const plan = await getMaintenancePlan(params.id);
   const tasks = await getMaintenanceTasks(params.id);
-  
+
   if (!plan) {
     return (
       <div className="p-8 text-center">
@@ -172,7 +173,7 @@ export default async function MaintenancePlanTasksPage({ params }: { params: { i
       </div>
     );
   }
-  
+
   // 按状态分组任务
   const groupedTasks = {
     pending: tasks.filter(task => task.status === "pending"),
@@ -180,7 +181,7 @@ export default async function MaintenancePlanTasksPage({ params }: { params: { i
     completed: tasks.filter(task => task.status === "completed"),
     cancelled: tasks.filter(task => task.status === "cancelled"),
   };
-  
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">

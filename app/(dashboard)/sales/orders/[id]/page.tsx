@@ -182,9 +182,10 @@ const statusMap: Record<string, { label: string; className: string }> = {
   cancelled: { label: "已取消", className: "bg-red-100 text-red-800" },
 };
 
-export default async function OrderDetailPage({ params }: { params: { id: string } }) {
+export default async function OrderDetailPage(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   const order = await getOrder(params.id);
-  
+
   if (!order) {
     return (
       <div className="p-8 text-center">
@@ -196,7 +197,7 @@ export default async function OrderDetailPage({ params }: { params: { id: string
       </div>
     );
   }
-  
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -129,12 +129,13 @@ async function createInvoice(data: any) {
   return { success: true, invoiceId: "inv" + Date.now() };
 }
 
-export default function InvoiceOrderPage({ params }: { params: { id: string } }) {
+export default function InvoiceOrderPage(props: { params: Promise<{ id: string }> }) {
+  const params = use(props.params);
   const router = useRouter();
   const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  
+
   // 表单状态
   const [formData, setFormData] = useState({
     invoiceDate: new Date().toISOString().split("T")[0],
@@ -157,7 +158,7 @@ export default function InvoiceOrderPage({ params }: { params: { id: string } })
     }[],
     sendEmail: true,
   });
-  
+
   // 加载数据
   useEffect(() => {
     async function loadData() {
@@ -210,23 +211,23 @@ export default function InvoiceOrderPage({ params }: { params: { id: string } })
     
     loadData();
   }, [params.id, router]);
-  
+
   // 处理表单变更
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
-  
+
   // 处理选择变更
   const handleSelectChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
-  
+
   // 处理复选框变更
   const handleCheckboxChange = (name: string, checked: boolean) => {
     setFormData(prev => ({ ...prev, [name]: checked }));
   };
-  
+
   // 更新发票项
   const handleItemChange = (itemId: string, isIncluded: boolean) => {
     setFormData(prev => {
@@ -249,7 +250,7 @@ export default function InvoiceOrderPage({ params }: { params: { id: string } })
       };
     });
   };
-  
+
   // 提交表单
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -284,11 +285,11 @@ export default function InvoiceOrderPage({ params }: { params: { id: string } })
       setSaving(false);
     }
   };
-  
+
   if (loading) {
     return <div className="p-8 text-center">加载中...</div>;
   }
-  
+
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
