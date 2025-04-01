@@ -18,7 +18,7 @@ resources:
           path: ./
         - run: cat .env.local
           path: ./
-        - run: export PATH=/usr/local/versions/node/v20.8.1/bin:$PATH && npm install
+        - run: export PATH=/usr/local/versions/node/v20.8.1/bin:$PATH && npm install --legacy-peer-deps
           path: ./
         - run: export PATH=/usr/local/versions/node/v20.8.1/bin:$PATH && npm run build
           path: ./
