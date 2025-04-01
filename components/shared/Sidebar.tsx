@@ -43,9 +43,12 @@ export function Sidebar() {
   return (
     <div className="flex h-full w-64 flex-col border-r border-sidebar-border bg-sidebar">
       <div className="flex h-14 items-center border-b border-sidebar-border px-4">
-        <Link href="/" className="flex items-center gap-2 font-semibold">
-          <IconPlant2 size={24} />
-          <span>园林销售管理系统</span>
+        <Link href="/" className="flex flex-col items-start gap-0 font-semibold">
+          <div className="flex items-center gap-2">
+            <IconPlant2 size={24} />
+            <span>木易销</span>
+          </div>
+          <span className="text-xs text-sidebar-foreground/70 pl-7">园林销售管理系统</span>
         </Link>
       </div>
       <div className="flex-1 overflow-auto py-4 px-3">

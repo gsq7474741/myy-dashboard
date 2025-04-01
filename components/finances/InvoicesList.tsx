@@ -121,12 +121,6 @@ const statusMap: Record<string, { label: string; className: string }> = {
   paid: { label: "已支付", className: "bg-green-100 text-green-800" },
 };
 
-// 支付方式映射
-const methodMap: Record<string, string> = {
-  cash: "现金",
-  bank_transfer: "银行转账",
-  credit_card: "信用卡",
-};
 
 export function InvoicesList() {
   // 计算已付金额

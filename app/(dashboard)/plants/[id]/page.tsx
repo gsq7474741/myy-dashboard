@@ -5,14 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 
-interface PlantPageProps {
-  params: {
-    id: string;
-  };
+type Params = Promise<{ id: string }>;
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
+interface PageProps {
+  params: Params;
+  searchParams?: SearchParams;
 }
 
-export default function PlantPage({ params }: PlantPageProps) {
-  const { id } = params;
+export default async function PlantPage({ params }: PageProps) {
+  const { id } = await params;
   
   return (
     <div className="space-y-6">
@@ -35,13 +37,13 @@ export default function PlantPage({ params }: PlantPageProps) {
           <TabsTrigger value="maintenance">养护记录</TabsTrigger>
         </TabsList>
         <TabsContent value="details">
-          <PlantDetails id={id} />
+          <PlantDetails />
         </TabsContent>
         <TabsContent value="status">
-          <PlantStatusHistory id={id} />
+          <PlantStatusHistory />
         </TabsContent>
         <TabsContent value="maintenance">
-          <PlantMaintenanceHistory id={id} />
+          <PlantMaintenanceHistory />
         </TabsContent>
       </Tabs>
     </div>

@@ -4,9 +4,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils/index";
 import Image from "next/image";
 
-interface PlantMaintenanceHistoryProps {
-  id: string;
-}
 
 // 模拟数据
 const maintenanceRecords = [
@@ -52,7 +49,7 @@ const maintenanceRecords = [
   },
 ];
 
-export function PlantMaintenanceHistory({ id }: PlantMaintenanceHistoryProps) {
+export function PlantMaintenanceHistory() {
   // 在实际应用中，这里会根据id从API获取苗木养护记录数据
   const records = maintenanceRecords;
 

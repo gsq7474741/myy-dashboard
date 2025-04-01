@@ -1,12 +1,9 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { formatDate } from "@/lib/utils";
+import { formatDate } from "@/lib/utils/index";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-interface PlantStatusHistoryProps {
-  id: string;
-}
 
 // 模拟数据
 const statusRecords = [
@@ -75,7 +72,7 @@ const statusMap: Record<string, { label: string; className: string }> = {
   dormant: { label: "休眠", className: "bg-blue-100 text-blue-800" },
 };
 
-export function PlantStatusHistory({ id }: PlantStatusHistoryProps) {
+export function PlantStatusHistory() {
   // 在实际应用中，这里会根据id从API获取苗木状态历史数据
   const records = statusRecords;
 

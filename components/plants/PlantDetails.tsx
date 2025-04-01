@@ -1,13 +1,10 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { formatCurrency } from "@/lib/utils";
+import { formatCurrency } from "@/lib/utils/index";
 import Image from "next/image";
 import { IconPlant2, IconRuler, IconCalendar, IconCoin, IconMapPin } from "@tabler/icons-react";
 
-interface PlantDetailsProps {
-  id: string;
-}
 
 // 模拟数据
 const plantData = {
@@ -44,7 +41,7 @@ const statusMap: Record<string, { label: string; className: string }> = {
   dormant: { label: "休眠", className: "bg-blue-100 text-blue-800" },
 };
 
-export function PlantDetails({ id }: PlantDetailsProps) {
+export function PlantDetails() {
   // 在实际应用中，这里会根据id从API获取苗木详情数据
   const plant = plantData;
 
