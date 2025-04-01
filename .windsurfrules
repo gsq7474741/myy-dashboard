@@ -1,5 +1,9 @@
 # WindSurf Rules - 园林销售企业管理系统开发规范
 
+## 0. 前言
+- 工作前先查阅`.docs`目录下的`tips.md`文档
+- 所有page的params参数需要使用`Promise`包装，并在`use`中解包，`use`为`import * as React from "react"; React.use`。
+
 ## 1. 项目结构规范
 
 ```
@@ -18,6 +22,7 @@
   /ui                     # shadcn/ui组件
   /shared                 # 通用组件
   /forms                  # 表单组件
+  /ai-assistant           # AI问答助手
   /[module]               # 各模块相关组件
 /lib
   /actions                # 服务器操作（Server Actions）
@@ -25,6 +30,7 @@
   /utils                  # 工具函数
   /validations            # 表单验证
   /db                     # 数据库配置
+  /ai                     # AI服务集成
 /prisma
   schema.prisma           # Prisma模型定义
 /public                   # 静态资源
@@ -327,15 +333,7 @@ export async function createPlant(data: unknown) {
 - 关键功能必须有测试覆盖
 - CI流程中运行测试确保质量
 
-## 9. 部署与DevOps规范
-
-- 使用阿里云fc作为主要部署平台
-- 实现CI/CD流程自动化部署
-- 使用环境变量管理配置
-- 实现请求日志和错误监控
-- 制定版本控制和分支策略
-
-## 10. 文档规范
+## 9. 文档规范
 
 - 使用JSDoc注释关键函数和组件
 - 维护README.md和CONTRIBUTING.md
@@ -354,11 +352,3 @@ export async function getPlantDetails(id: string): Promise<PlantWithDetails> {
   // 实现...
 }
 ```
-
-## 11. 无障碍规范
-
-- 遵循WCAG 2.1标准
-- 提供适当的ARIA属性
-- 确保键盘可访问性
-- 色彩对比度符合标准
-- 测试屏幕阅读器兼容性

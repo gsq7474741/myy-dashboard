@@ -1,4 +1,6 @@
 import { InvoicesList } from "@/components/finances/InvoicesList";
+import { PaymentsList } from "@/components/finances/PaymentsList";
+import { ExpensesList } from "@/components/finances/ExpensesList";
 import { FinanceFilters } from "@/components/finances/FinanceFilters";
 import { FinanceSummary } from "@/components/finances/FinanceSummary";
 import { Button } from "@/components/ui/button";
@@ -35,15 +37,13 @@ export default function FinancesPage() {
         <TabsContent value="payments">
           <FinanceFilters type="payment" />
           <div className="mt-4">
-            {/* 这里将放置PaymentsList组件 */}
-            <p className="text-center text-muted-foreground py-8">支付记录将显示在这里</p>
+            <PaymentsList />
           </div>
         </TabsContent>
         <TabsContent value="expenses">
           <FinanceFilters type="expense" />
           <div className="mt-4">
-            {/* 这里将放置ExpensesList组件 */}
-            <p className="text-center text-muted-foreground py-8">支出记录将显示在这里</p>
+            <ExpensesList />
           </div>
         </TabsContent>
       </Tabs>

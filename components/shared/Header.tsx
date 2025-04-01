@@ -12,9 +12,16 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { IconBell, IconSearch, IconMoon, IconSun } from "@tabler/icons-react";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 export function Header() {
   const { setTheme, theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // 在客户端渲染完成后才显示主题切换按钮
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <header className="sticky top-0 z-10 flex h-14 items-center gap-4 border-b bg-background px-4 lg:px-6">
@@ -29,19 +36,42 @@ export function Header() {
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <Button
-          variant="outline"
-          size="icon"
-          className="rounded-full"
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-        >
-          {theme === "dark" ? (
-            <IconSun className="h-4 w-4" />
-          ) : (
-            <IconMoon className="h-4 w-4" />
-          )}
-          <span className="sr-only">切换主题</span>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="rounded-full"
+            >
+              {mounted ? (
+                theme === "dark" ? (
+                  <IconSun className="h-4 w-4" />
+                ) : theme === "light" ? (
+                  <IconMoon className="h-4 w-4" />
+                ) : (
+                  <span className="h-4 w-4 flex items-center justify-center">自动</span>
+                )
+              ) : (
+                <span className="h-4 w-4" />
+              )}
+              <span className="sr-only">切换主题</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => setTheme("light")}>
+              <IconSun className="mr-2 h-4 w-4" />
+              <span>浅色</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("dark")}>
+              <IconMoon className="mr-2 h-4 w-4" />
+              <span>深色</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("system")}>
+              <span className="mr-2 h-4 w-4 flex items-center justify-center">系</span>
+              <span>跟随系统</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <Button variant="outline" size="icon" className="rounded-full">
           <IconBell className="h-4 w-4" />
           <span className="sr-only">通知</span>
