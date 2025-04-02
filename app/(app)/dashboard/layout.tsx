@@ -3,7 +3,7 @@ import { Sidebar } from "@/components/shared/Sidebar";
 import { Header } from "@/components/shared/Header";
 import { AIAssistantProvider } from "@/components/ai-assistant/AIAssistantProvider";
 
-export default function DashboardLayout({
+export default function AppLayout({
   children,
 }: {
   children: React.ReactNode;

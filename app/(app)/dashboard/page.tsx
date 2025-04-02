@@ -2,7 +2,7 @@ import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
 import { RecentActivities } from "@/components/dashboard/RecentActivities";
 import { StatisticsCards } from "@/components/dashboard/StatisticsCards";
 
-export default function DashboardPage() {
+export default function HomePage() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">仪表盘</h1>

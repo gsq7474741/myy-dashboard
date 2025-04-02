@@ -7,6 +7,7 @@ import {
   IconNotification,
   IconUserCircle,
 } from "@tabler/icons-react"
+import { useRouter } from "next/navigation"
 
 import {
   Avatar,
@@ -39,6 +40,30 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const router = useRouter()
+
+  // 处理登出
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        // 登出成功，重定向到登录页面
+        router.push("/login");
+        // 强制刷新页面以确保状态完全重置
+        window.location.href = "/login";
+      } else {
+        console.error("登出失败");
+      }
+    } catch (error) {
+      console.error("登出请求失败:", error);
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -86,21 +111,21 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <IconUserCircle />
-                Account
+                账户设置
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconCreditCard />
-                Billing
+                账单管理
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconNotification />
-                Notifications
+                通知中心
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <IconLogout />
-              Log out
+              退出登录
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

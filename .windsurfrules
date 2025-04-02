@@ -2,39 +2,7 @@
 
 ## 0. 前言
 - 工作前先查阅`.docs`目录下的`tips.md`文档
-- 所有page的params参数需要使用`Promise`包装，并在`use`中解包，`use`为`import * as React from "react"; React.use`。
 
-## 1. 项目结构规范
-
-```
-/app
-  /api                    # API路由
-  /(auth)                 # 认证相关页面
-  /(dashboard)            # 受保护的应用页面
-    /plants               # 苗木资产管理
-    /inventory            # 库存管理
-    /sales                # 销售管理
-    /finances             # 财务管理
-    /maintenance          # 养护服务
-    /diagnosis            # 远程诊断
-  /layout.tsx             # 应用布局
-/components
-  /ui                     # shadcn/ui组件
-  /shared                 # 通用组件
-  /forms                  # 表单组件
-  /ai-assistant           # AI问答助手
-  /[module]               # 各模块相关组件
-/lib
-  /actions                # 服务器操作（Server Actions）
-  /hooks                  # 自定义钩子
-  /utils                  # 工具函数
-  /validations            # 表单验证
-  /db                     # 数据库配置
-  /ai                     # AI服务集成
-/prisma
-  schema.prisma           # Prisma模型定义
-/public                   # 静态资源
-```
 
 ## 2. 命名规范
 
@@ -71,37 +39,7 @@
 - 页面组件放在app目录下，UI组件放在components目录下
 - 善用服务器组件减少客户端JavaScript体积
 
-```tsx
-// 服务器组件示例 (app/plants/page.tsx)
-export default async function PlantsPage() {
-  const plants = await fetchPlants();
 
-  return (
-    <div>
-      <h1>Plant Management</h1>
-      <PlantList plants={plants} />
-    </div>
-  );
-}
-
-// 客户端组件示例 (components/plants/PlantForm.tsx)
-"use client";
-
-import { useState } from 'react';
-
-export default function PlantForm({ onSubmit }) {
-  const [name, setName] = useState('');
-
-  return (
-    <form onSubmit={(e) => {
-      e.preventDefault();
-      onSubmit({ name });
-    }}>
-      {/* 表单内容 */}
-    </form>
-  );
-}
-```
 
 ### 3.3 数据获取
 
@@ -109,44 +47,7 @@ export default function PlantForm({ onSubmit }) {
 - 使用SWR或React Query处理客户端数据获取和缓存
 - 避免直接在客户端组件中调用Prisma
 
-```tsx
-// 服务器操作示例 (lib/actions/plants.ts)
-"use server";
 
-import { db } from "@/lib/db";
-
-export async function createPlant(data) {
-  const plant = await db.plant.create({
-    data: {
-      name: data.name,
-      species: data.species,
-      // 其他属性
-    }
-  });
-
-  return plant;
-}
-
-// 使用示例 (components/plants/CreatePlantForm.tsx)
-"use client";
-
-import { createPlant } from "@/lib/actions/plants";
-
-export default function CreatePlantForm() {
-  async function handleSubmit(formData) {
-    await createPlant({
-      name: formData.get("name"),
-      species: formData.get("species"),
-    });
-  }
-
-  return (
-    <form action={handleSubmit}>
-      {/* 表单内容 */}
-    </form>
-  );
-}
-```
 
 ### 3.4 状态管理
 
@@ -171,41 +72,7 @@ export default function CreatePlantForm() {
 - 使用组合而不是继承扩展组件功能
 - 组件props应该有完整的TypeScript类型定义
 
-```tsx
-// 良好的组件结构示例
-type PlantCardProps = {
-  plant: IPlant;
-  onView?: (id: string) => void;
-  onEdit?: (id: string) => void;
-};
 
-export function PlantCard({ plant, onView, onEdit }: PlantCardProps) {
-  return (
-    <div className="rounded-lg border p-4">
-      <div className="flex justify-between">
-        <h3 className="font-medium">{plant.name}</h3>
-        <PlantStatusBadge status={plant.status} />
-      </div>
-      <div className="mt-2">
-        <p>Species: {plant.species}</p>
-        <p>Value: ${plant.value}</p>
-      </div>
-      <div className="mt-4 flex gap-2">
-        {onView && (
-          <Button variant="outline" onClick={() => onView(plant.id)}>
-            View
-          </Button>
-        )}
-        {onEdit && (
-          <Button variant="outline" onClick={() => onEdit(plant.id)}>
-            Edit
-          </Button>
-        )}
-      </div>
-    </div>
-  );
-}
-```
 
 ### 4.2 UI组件库使用
 
@@ -230,14 +97,6 @@ button.tsx          context-menu.tsx    label.tsx           scroll-area.tsx     
 - 使用Flex和Grid布局创建灵活UI
 - 测试关键视图在各种屏幕尺寸上的表现
 
-```tsx
-// 响应式布局示例
-<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-  {plants.map(plant => (
-    <PlantCard key={plant.id} plant={plant} />
-  ))}
-</div>
-```
 
 ## 5. API和数据库规范
 
@@ -248,24 +107,7 @@ button.tsx          context-menu.tsx    label.tsx           scroll-area.tsx     
 - 响应遵循统一格式
 - 妥善处理错误状态
 
-```typescript
-// 良好的API路由示例 (app/api/plants/route.ts)
-import { NextResponse } from 'next/server';
-import { db } from '@/lib/db';
 
-export async function GET(request: Request) {
-  try {
-    const plants = await db.plant.findMany();
-    return NextResponse.json({ data: plants });
-  } catch (error) {
-    console.error('Failed to fetch plants:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch plants' },
-      { status: 500 }
-    );
-  }
-}
-```
 
 ### 5.2 Prisma使用规范
 
@@ -280,33 +122,6 @@ export async function GET(request: Request) {
 - 使用Zod或Yup验证所有输入数据
 - 前端和后端均进行数据验证
 - 错误信息应该清晰友好
-
-```typescript
-// 使用Zod进行数据验证示例
-import { z } from 'zod';
-
-export const plantSchema = z.object({
-  name: z.string().min(1, "Plant name is required"),
-  species: z.string().min(1, "Species is required"),
-  value: z.number().positive("Value must be positive"),
-  status: z.enum(["healthy", "sick", "dormant"]),
-});
-
-export type PlantFormData = z.infer<typeof plantSchema>;
-
-// 在Server Action中使用
-export async function createPlant(data: unknown) {
-  const result = plantSchema.safeParse(data);
-
-  if (!result.success) {
-    return { error: result.error.format() };
-  }
-
-  // 处理有效数据
-  const validData = result.data;
-  // ...
-}
-```
 
 ## 6. 性能优化规范
 
@@ -339,16 +154,3 @@ export async function createPlant(data: unknown) {
 - 维护README.md和CONTRIBUTING.md
 - 文档应与代码同步更新
 - 为API创建使用示例
-
-```typescript
-/**
- * 获取苗木详细信息
- * 
- * @param id - 苗木唯一标识符
- * @returns 苗木完整信息，包括库存和分类数据
- * @throws 当找不到苗木或数据库错误时抛出异常
- */
-export async function getPlantDetails(id: string): Promise<PlantWithDetails> {
-  // 实现...
-}
-```
